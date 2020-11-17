@@ -1,0 +1,35 @@
+<launch>
+    <arg name="name" default="face_in_motion"/>
+    <arg name="rate" default="1"/>
+    <arg name="objectBasePath" default="$(find extended_object_detection)/config/object_base_example/ObjectBaseExample.xml"/>    
+    
+    <node name="rosbag_play" pkg="rosbag" type="play" args="$(find eod_bags)/bags/$(arg name).bag -r $(arg rate) -l" required="true"/>
+            
+    <node name="republish_compressed" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/image_raw raw out:=/camera/image_raw" />
+    
+    <node name="extended_object_detection" pkg="extended_object_detection" type="extended_object_detection_node" output="screen">
+        
+        <param name="objectBasePath" value="$(arg objectBasePath)"/>
+        <param name="videoProcessUpdateRate" value="5"/>
+        <param name="screenOutput" value="false"/>
+        <param name="publishImage" value="true"/>
+        <param name="publishMarkers" value="true"/>
+        <param name="subscribeDepth" value="false"/>        
+        <param name="maxContourPoints" value="-1"/>        
+        
+        <rosparam param="selectedOnStartSimple">[31]</rosparam>
+        <rosparam param="selectedOnStartComplex">[-1]</rosparam>
+        
+        <remap from="camera/image_raw" to="/camera/image_raw"/>
+        <remap from="camera/info" to="/camera/camera_info"/>
+    </node>
+    
+    <!-- visualization -->
+    <node pkg="rviz" type="rviz" name="rviz"
+    args="-d $(find extended_object_detection)/config/eod_example.rviz" />
+    
+    <node pkg="tf" type="static_transform_publisher" name="static_cam_pub"
+        args="0 0 0 -1.57 0 -1.57 map cam_optical_link 100"/>  
+    
+</launch>
+    

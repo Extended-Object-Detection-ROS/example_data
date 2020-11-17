@@ -1,0 +1,14 @@
+<launch>
+    <arg name="name" default="none"/>
+    
+    <include file="$(find openni_launch)/launch/openni.launch">                
+        <arg name="depth_registration" value="true"/>
+    </include>
+    
+     <node pkg="rosbag" type="record" name="rosbag_record_cam"
+       args="record -O $(find eod_bags)/bags/$(arg name) /camera/rgb/image_raw/compressed /camera/camera_info /camera/depth_registered/image_raw/compressed /camera/depth_registered/camera_info"/>
+    
+    
+</launch>
+    
+    
