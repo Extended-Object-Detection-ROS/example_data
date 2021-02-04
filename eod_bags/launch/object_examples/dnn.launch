@@ -10,7 +10,7 @@
     <node name="extended_object_detection" pkg="extended_object_detection" type="extended_object_detection_node" output="screen">
         
         <param name="objectBasePath" value="$(arg objectBasePath)"/>
-        <param name="videoProcessUpdateRate" value="5"/>
+        <param name="videoProcessUpdateRate" value="30"/>
         <param name="screenOutput" value="false"/>
         <param name="publishImage" value="true"/>
         <param name="publishMarkers" value="true"/>
