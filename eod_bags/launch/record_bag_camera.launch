@@ -1,5 +1,7 @@
 <launch>
     <arg name="name" default="none"/>
+    <arg name="do_detection" default="false"/>
+    <arg name="objectBasePath" default="$(find extended_object_detection)/config/object_base_example/sems_experiments.xml"/>
     
     <node name="camera" pkg="usb_cam" type="usb_cam_node" output="screen" clear_params="true" respawn="false" required="false" launch-prefix="" >
         <param name="video_device" value="/dev/video0" />
@@ -15,6 +17,25 @@
     
      <node pkg="rosbag" type="record" name="rosbag_record_cam"
        args="record -O $(find eod_bags)/bags/$(arg name) /camera/image_raw/compressed /camera/camera_info"/>
+     
+     <node if="$(arg do_detection)" name="extended_object_detection" pkg="extended_object_detection" type="extended_object_detection_node" output="screen" required="true">
+        
+        <param name="objectBasePath" value="$(arg objectBasePath)"/>
+        <param name="videoProcessUpdateRate" value="5"/>
+        <param name="screenOutput" value="false"/>
+        <param name="publishImage" value="true"/>
+        <param name="publishMarkers" value="true"/>
+        <param name="subscribeDepth" value="false"/>        
+        <param name="maxContourPoints" value="-1"/>        
+        
+        <rosparam param="selectedOnStartSimple">[]</rosparam>
+        <rosparam param="selectedOnStartComplex">[]</rosparam>
+        
+        <remap from="camera/image_raw" to="/camera/image_raw"/>
+        <remap from="camera/info" to="/camera/camera_info"/>
+    </node> 
+    
+    <node if="$(arg do_detection)" pkg="rqt_image_view" name="rqt_image_view" type="rqt_image_view"/>
     
     
 </launch>
