@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+
+<AttributeLib>
+    
+    <Attribute Name="KeyboardDnn" Type="Dnn" Weight="4" framework="tensorflow" weights="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb" config="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/config.pbtxt" labels="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/mscoco_label_map.pbtxt" inputWidth="300" inputHeight="300" Probability="0.75" obj_id="76"/>            
+    
+    <Attribute Name="ScreenDnn" Type="Dnn" Weight="4" framework="tensorflow" weights="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb" config="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/config.pbtxt" labels="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/mscoco_label_map.pbtxt" inputWidth="300" inputHeight="300" Probability="0.75" obj_id="72"/>   
+    
+    <Attribute Name="MouseDnn" Type="Dnn" Weight="4" framework="tensorflow" weights="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb" config="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/config.pbtxt" labels="../../../extended_object_detection/config/object_base_example/ssd_mobilenet_v1_coco_2017_11_17/mscoco_label_map.pbtxt" inputWidth="300" inputHeight="300" Probability="0.5" obj_id="74"/>    
+    
+    <Attribute Name="MouseBlob" Type="Blob" Weight="1" minThreshold="10" maxThreshold="297" blobColor="0" minArea="554" minCircularity="0.10" minConvexity="0.87" minInertiaRatio="0.01"/>
+    
+    <Attribute Name="MouseBlack" Type="HistColor" Histogram="histograms/Black.yaml" Probability="0.75" Contour="FALSE"/>    
+        
+</AttributeLib>
+
+<SimpleObjectBase>
+    
+    <SimpleObject Name="Keyboard" ID="1" Probability="1">
+        <Attribute Type="Detect">KeyboardDnn</Attribute>
+    </SimpleObject>
+    
+    <SimpleObject Name="Mouse" ID="2" Mode="Soft" Probability="0.5">
+        <Tracker IOU="0.3" decay="0.01" soft_prob="0.2">NONE</Tracker>
+        <Attribute Type="Detect">MouseBlack</Attribute>
+        <Attribute Type="Detect">MouseDnn</Attribute>
+        
+    </SimpleObject>
+    
+    <SimpleObject Name="Screen" ID="3">
+        <Attribute Type="Detect">ScreenDnn</Attribute>
+    </SimpleObject>
+    
+</SimpleObjectBase>
+
+<RelationLib>    
+    
+    <RelationShip Type="SpaceLeft" Name="left"/>
+    <RelationShip Type="SpaceRight" Name="right"/>
+    <RelationShip Type="SpaceDown" Name="down"/>
+    <RelationShip Type="SpaceUp" Name="up"/>
+    <RelationShip Type="SpaceOut" Name="out"/>
+    
+    <RelationShip Type="LogicAnd" Name="out-left" A="out" B="left"/>
+    
+</RelationLib>
+
+<ComplexObjectBase>
+    
+    <ComplexObject ID="1" Name="PC" Mode="Soft" Probability="0.5">
+        <SimpleObject Class="Screen" InnerName="Screen" Weight="2"/>
+        <SimpleObject Class="Mouse" InnerName="Mouse"/>
+        <SimpleObject Class="Keyboard" InnerName="Keyboard"/>        
+        
+        <Relation Obj1="Keyboard" Obj2="Mouse" Relationship="out-left"/>        
+        <Relation Obj1="Screen" Obj2="Keyboard" Relationship="up"/>
+        <Relation Obj1="Screen" Obj2="Mouse" Relationship="up"/>
+        
+    </ComplexObject>
+    
+</ComplexObjectBase>
