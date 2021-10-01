@@ -18,7 +18,7 @@ class MouseExperiment(object):
         
         self.cnt_object = rospy.get_param('~cnt_object', 'Colors')
         
-        self.stop_frames = rospy.get_param('~stop_frames', [10, 38, 70])
+        self.stop_frames = rospy.get_param('~stop_frames', [])#[10, 38, 70])
         
         self.save_path = rospy.get_param('~save_path', '/tmp')        
         self.scores = [[], []]
@@ -60,11 +60,14 @@ class MouseExperiment(object):
     def run(self):
         while not rospy.is_shutdown():
             plt.cla()
-            plt.plot(self.scores[0], label = "{} avg {:.2f}".format(self.compare_objects[0], np.mean(self.scores[0])))
-            plt.plot(self.scores[1], label = "{} avg {:.2f}".format(self.compare_objects[1], np.mean(self.scores[1])))
+            plt.plot(self.scores[0], label = "{} avg Dc {:.2f}".format(self.compare_objects[0], np.mean(self.scores[0])))
+
+            plt.plot(self.scores[1], label = "{} avg Dc {:.2f}".format(self.compare_objects[1], np.mean(self.scores[1])))
             #plt.plot(np.array(self.cnt)/max(self.cnt), label="color objects number")
             plt.grid()
-            plt.title("Degree of confidence")
+            plt.title("Degree of confidence difference")
+            plt.ylabel("Dc")
+            plt.xlabel("frame sequence")
             plt.legend()            
             plt.pause(0.1)
             
