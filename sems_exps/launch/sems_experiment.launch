@@ -3,7 +3,7 @@
     <arg name="rate" default="1"/>
     <arg name="objectBasePath" default="$(find sems_exps)/config/sems_experiments.xml"/>    
     
-    <node name="rosbag_play" pkg="rosbag" type="play" args="$(find sems_exps)/bags/$(arg name).bag -r $(arg rate) -l" required="true"/>
+    <node name="rosbag_play" pkg="rosbag" type="play" args="$(find sems_exps)/bags/$(arg name).bag -r $(arg rate)" required="true"/>
             
     <node name="republish_compressed" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/image_raw raw out:=/camera/image_raw" />
     
@@ -22,6 +22,12 @@
         
         <remap from="camera/image_raw" to="/camera/image_raw"/>
         <remap from="camera/info" to="/camera/camera_info"/>
+    </node>
+    
+    <node name="mouse_experiment" pkg="sems_exps" type="mouse_experiment.py">
+        <param name="save_path" value="$(find sems_exps)/share"/>
+        
+        <remap from="simple_objects" to="extended_object_detection/simple_objects"/>
     </node>
     
     <!-- visualization -->
