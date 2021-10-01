@@ -28,6 +28,7 @@
         <param name="save_path" value="$(find sems_exps)/share"/>
         
         <remap from="simple_objects" to="extended_object_detection/simple_objects"/>
+        <remap from="detected_image" to="extended_object_detection/detected_image"/>
     </node>
     
     <!-- visualization -->

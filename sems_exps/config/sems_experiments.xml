@@ -20,25 +20,24 @@
         <Attribute Type="Detect">KeyboardDnn</Attribute>
     </SimpleObject>-->
     
-    <SimpleObject Name="MouseDnnOnly" ID="1" Mode="Hard" Probability="0.5">        
-        <!--<Attribute Type="Detect">MouseBlack</Attribute>-->
+    <!--<SimpleObject Name="MouseDnnOnly" ID="1" Mode="Hard" Probability="0.5">                
         <Attribute Type="Detect">MouseDnn</Attribute>        
-    </SimpleObject>
+    </SimpleObject>-->
     
-    <SimpleObject Name="MouseSoftTrack" ID="2" Mode="Soft" Probability="0.5">
-        <Tracker IOU="0.3" decay="0.01" soft_prob="0.2">NONE</Tracker>
+    <!--<SimpleObject Name="MouseSoftTrack" ID="2" Mode="Soft" Probability="0.5">
+        <Tracker IOU="0." decay="0.01" soft_prob="0.2">NONE</Tracker>
         <Attribute Type="Detect">MouseBlack</Attribute>
         <Attribute Type="Detect">MouseDnn</Attribute>        
-    </SimpleObject>
+    </SimpleObject>-->
     
-    <SimpleObject Name="MouseTrack" ID="3" Mode="Hard" Probability="0.5">
+    <!--<SimpleObject Name="MouseTrack" ID="3" Mode="Hard" Probability="0.5">
         <Tracker IOU="0.3" decay="0.01" soft_prob="0.2">NONE</Tracker>        
         <Attribute Type="Detect">MouseDnn</Attribute>        
-    </SimpleObject>
-    
-    <!--<SimpleObject Name="Colors" ID="3" Mode="Hard" Probability="0.5">        
-        <Attribute Type="Detect">MouseBlack</Attribute>        
     </SimpleObject>-->
+    
+    <SimpleObject Name="Colors" ID="3" Mode="Hard" Probability="0.5">        
+        <Attribute Type="Detect">MouseBlack</Attribute>        
+    </SimpleObject>
     
     <!--<SimpleObject Name="Screen" ID="3">
         <Attribute Type="Detect">ScreenDnn</Attribute>
